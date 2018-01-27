@@ -1,0 +1,165 @@
+<html>
+	<head>
+		<title></title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<style>
+			.btn{
+				width: 200px;
+				padding: 15px 32px;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container theme-showcase" role="main" aria-label="...">
+			<div class="jumbotron">
+				<h1>Firmata y Arduino</h1>
+				<h1><p id="pote">Valor pote: </p></h1>
+			</div>
+			<div class="row">
+				<div class="btn-group btn-group-justified" role="group">
+					<div class="btn-group" role="group">
+						<button id="btn_01" type="button" class="btn btn-lg btn-default">1</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button id="btn_02" type="button" class="btn btn-lg btn-default">2</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button id="btn_03" type="button" class="btn btn-lg btn-default">3</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button id="btn_04" type="button" class="btn btn-lg btn-default">4</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button id="btn_05" type="button" class="btn btn-lg btn-default">5</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button id="btn_06" type="button" class="btn btn-lg btn-default">6</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button id="btn_07" type="button" class="btn btn-lg btn-default">7</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button id="btn_08" type="button" class="btn btn-lg btn-default">8</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button id="btn_09" type="button" class="btn btn-lg btn-default">9</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button id="btn_10" type="button" class="btn btn-lg btn-default">10</button>
+					</div>
+				</div>
+
+				<!--
+				<div class="col-md-3">
+					<button id="b_stop" type="button" class="btn btn-lg btn-default">Blink</button>
+					<button id="b_off" type="button" class="btn btn-lg btn-default">Led OFF</button>
+					<button id="b_on" type="button" class="btn btn-lg btn-default">Led ON</button>
+				</div>
+				-->
+			</div>
+			<div class="row">
+				<p></p>
+			</div>
+			<div class="row">
+
+				<div class="progress">
+				  <div id="bar" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="10" style="width: 10%;">
+					<span class="sr-only">60% Complete</span>
+				  </div>
+				</div>
+			</div>
+			<div class="row">
+				<p></p>
+			</div>
+			<div class="row">
+				<div class="well">
+				</div>
+			</div>
+		</div>
+		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="/socket.io/socket.io.js">
+			<script src="app.js">
+		</script>
+		<script>
+			var socket = io();
+			function cambia_01(){
+				socket.emit('led_01');
+			}
+			function cambia_02(){
+				socket.emit('led_02');
+			}
+			function cambia_03(){
+				socket.emit('led_03');
+			}
+			function cambia_04(){
+				socket.emit('led_04');
+			}
+			function cambia_05(){
+				socket.emit('led_05');
+			}
+			function cambia_06(){
+				socket.emit('led_06');
+			}
+			function cambia_07(){
+				socket.emit('led_07');
+			}
+			function cambia_08(){
+				socket.emit('led_08');
+			}
+			function cambia_09(){
+				socket.emit('led_09');
+			}
+			function cambia_10(){
+				socket.emit('led_10');
+			}
+			
+			socket.on('cambio', function(estado){
+				var btn = document.getElementById(estado[0]);
+
+				if (estado[1]){
+					btn.className = 'btn btn-lg btn-danger';
+				} else {
+					btn.className = 'btn btn-lg btn-default';
+				}
+			});
+
+			socket.on('pote', function(value){
+				var pot = document.getElementById('pote');
+				pot.innerHTML = 'Valor pote: ' + value;
+				var bar = document.getElementById('bar');
+				bar.style.width = value*10 + '%';
+			});
+
+
+			function stopBlink(){
+				socket.emit('stop');
+			}
+			function offLed(){
+				socket.emit('off');
+			}
+			function onLed(){
+				socket.emit('on');
+			}
+			document.getElementById('btn_01').onclick = cambia_01;
+			document.getElementById('btn_02').onclick = cambia_02;
+			document.getElementById('btn_03').onclick = cambia_03;
+			document.getElementById('btn_04').onclick = cambia_04;
+			document.getElementById('btn_05').onclick = cambia_05;
+			document.getElementById('btn_06').onclick = cambia_06;
+			document.getElementById('btn_07').onclick = cambia_07;
+			document.getElementById('btn_08').onclick = cambia_08;
+			document.getElementById('btn_09').onclick = cambia_09;
+			document.getElementById('btn_10').onclick = cambia_10;
+			
+			//document.getElementById('b_stop').onclick = stopBlink;
+			//document.getElementById('b_off').onclick = offLed;
+			//document.getElementById('b_on').onclick = onLed;
+			
+			socket.emit('estado');
+			
+			
+			
+		</script>
+	</body>
+</html>
